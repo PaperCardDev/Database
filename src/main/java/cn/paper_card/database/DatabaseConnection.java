@@ -79,21 +79,21 @@ public class DatabaseConnection {
     }
 
 
-    public static class Important extends DatabaseConnection {
+    static class Important extends DatabaseConnection {
 
-        public Important(@NotNull File folder) throws SQLException, ClassNotFoundException {
+        Important(@NotNull File folder) throws SQLException, ClassNotFoundException {
             super(new File(folder, "Important.db"));
         }
     }
 
-    public static class Normal extends DatabaseConnection {
-        public Normal(@NotNull File folder) throws SQLException, ClassNotFoundException {
+    static class Normal extends DatabaseConnection {
+        Normal(@NotNull File folder) throws SQLException, ClassNotFoundException {
             super(new File(folder, "Normal.db"));
         }
     }
 
-    public static class Unimportant extends DatabaseConnection {
-        public Unimportant(@NotNull File folder) throws SQLException, ClassNotFoundException {
+    static class Unimportant extends DatabaseConnection {
+        Unimportant(@NotNull File folder) throws SQLException, ClassNotFoundException {
             super(new File(folder, "Unimportant.db"));
         }
     }
