@@ -12,7 +12,7 @@ public final class Database extends JavaPlugin implements DatabaseApi {
     public void onEnable() {
         final File folder = this.getDataFolder();
 
-        this.getLogger().info("真正测试数据库连接，如果没有任何错误信息，则数据库连接正常");
+        this.getLogger().info("正在测试数据库连接，如果没有任何错误信息，则数据库连接正常");
 
         try {
             final DatabaseConnection connection = this.connectImportant();
