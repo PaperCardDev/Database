@@ -71,6 +71,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>cn.paper_card</groupId>
+            <artifactId>McCommand</artifactId>
+            <version>1.0</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
             <groupId>com.mysql</groupId>

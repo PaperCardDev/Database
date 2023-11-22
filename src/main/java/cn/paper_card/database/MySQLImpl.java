@@ -30,7 +30,22 @@ class MySQLImpl implements DatabaseApi.MySql {
         if (user.isEmpty()) throw new Exception("%s的用户名未指定！".formatted(type));
 
 
-        return new MySqlConnection(address, user, password).getConnection();
+        return new MySqlConnectionImpl(new MySqlConnectionImpl.Config() {
+            @Override
+            public @NotNull String getAddress() {
+                return address;
+            }
+
+            @Override
+            public @NotNull String getUser() {
+                return user;
+            }
+
+            @Override
+            public @NotNull String getPassword() {
+                return password;
+            }
+        }).getRowConnection();
     }
 
     @Override

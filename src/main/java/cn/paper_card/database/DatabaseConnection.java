@@ -10,7 +10,7 @@ public class DatabaseConnection {
 
     private final @NotNull Connection connection;
 
-    public DatabaseConnection(@NotNull File file) throws SQLException, ClassNotFoundException {
+    DatabaseConnection(@NotNull File file) throws SQLException {
 
         // 数据库文件
         final File parentFile = file.getParentFile();
@@ -22,7 +22,11 @@ public class DatabaseConnection {
         }
 
         // 驱动类
-        Class.forName("org.sqlite.JDBC");
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("无法加载SQLITE驱动类", e);
+        }
 
         // 数据库连接
         this.connection = DriverManager.getConnection("jdbc:sqlite:" + file.getAbsolutePath());
@@ -81,19 +85,19 @@ public class DatabaseConnection {
 
     static class Important extends DatabaseConnection {
 
-        Important(@NotNull File folder) throws SQLException, ClassNotFoundException {
+        Important(@NotNull File folder) throws SQLException {
             super(new File(folder, "Important.db"));
         }
     }
 
     static class Normal extends DatabaseConnection {
-        Normal(@NotNull File folder) throws SQLException, ClassNotFoundException {
+        Normal(@NotNull File folder) throws SQLException {
             super(new File(folder, "Normal.db"));
         }
     }
 
     static class Unimportant extends DatabaseConnection {
-        Unimportant(@NotNull File folder) throws SQLException, ClassNotFoundException {
+        Unimportant(@NotNull File folder) throws SQLException {
             super(new File(folder, "Unimportant.db"));
         }
     }

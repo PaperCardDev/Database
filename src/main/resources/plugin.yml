@@ -6,3 +6,11 @@ author: Paper99
 description: 提供数据库连接服务
 
 folia-supported: true
+
+commands:
+  database:
+    permission: database.command
+
+permissions:
+  database.command:
+    default: op
