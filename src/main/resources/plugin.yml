@@ -1,6 +1,6 @@
 name: Database
 version: '${project.version}'
-main: cn.paper_card.database.Database
+main: cn.paper_card.database.ThePlugin
 api-version: 1.20
 author: Paper99
 description: 提供数据库连接服务

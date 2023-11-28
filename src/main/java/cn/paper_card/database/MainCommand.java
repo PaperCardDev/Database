@@ -1,5 +1,6 @@
 package cn.paper_card.database;
 
+import cn.paper_card.database.api.DatabaseApi;
 import cn.paper_card.mc_command.TheMcCommand;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -17,9 +18,9 @@ class MainCommand extends TheMcCommand.HasSub {
 
     private final @NotNull Permission permission;
 
-    private final @NotNull Database plugin;
+    private final @NotNull ThePlugin plugin;
 
-    MainCommand(@NotNull Database plugin) {
+    MainCommand(@NotNull ThePlugin plugin) {
         super("database");
         this.plugin = plugin;
         this.permission = Objects.requireNonNull(plugin.getServer().getPluginManager().getPermission(this.getLabel() + ".command"));
@@ -73,19 +74,22 @@ class MainCommand extends TheMcCommand.HasSub {
         @Override
         public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-            final DatabaseApi.RemoteMySqlDb remoteMySqlDb = plugin.getRemoteMySqlDb();
-            final MySqlConnectionImpl important = (MySqlConnectionImpl) remoteMySqlDb.getConnectionImportant();
-            final MySqlConnectionImpl normal = (MySqlConnectionImpl) remoteMySqlDb.getConnectionNormal();
-            final MySqlConnectionImpl unimportant = (MySqlConnectionImpl) remoteMySqlDb.getConnectionUnimportant();
+            final DatabaseApi.RemoteMySQL remoteMySQL = plugin.getDatabaseApi().getRemoteMySQL();
+            final MySqlConnectionImpl important = (MySqlConnectionImpl) remoteMySQL.getConnectionImportant();
+            final MySqlConnectionImpl normal = (MySqlConnectionImpl) remoteMySQL.getConnectionNormal();
+            final MySqlConnectionImpl unimportant = (MySqlConnectionImpl) remoteMySQL.getConnectionUnimportant();
 
             final TextComponent.Builder text = Component.text();
-            text.append(Component.text("---- 远程MySQL数据库连接状态 ----"));
-            text.appendNewline();
+            text.append(Component.text("==== 远程MySQL数据库连接状态 ===="));
 
             final long cur = System.currentTimeMillis();
+
+            text.appendNewline();
             appendConInfo(text, important, "Important", cur);
+
             text.appendNewline();
             appendConInfo(text, normal, "Normal", cur);
+
             text.appendNewline();
             appendConInfo(text, unimportant, "Unimportant", cur);
 
@@ -117,7 +121,7 @@ class MainCommand extends TheMcCommand.HasSub {
         @Override
         public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
             plugin.reloadConfig();
-            plugin.sendInfo(commandSender, "已重载配置");
+            plugin.sendInfo(commandSender);
             return true;
         }
 

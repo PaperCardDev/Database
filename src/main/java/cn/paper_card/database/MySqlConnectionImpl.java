@@ -1,5 +1,6 @@
 package cn.paper_card.database;
 
+import cn.paper_card.database.api.DatabaseApi;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
@@ -69,7 +70,7 @@ class MySqlConnectionImpl implements DatabaseApi.MySqlConnection {
     }
 
     @Override
-    public @NotNull Connection getRowConnection() throws SQLException {
+    public @NotNull Connection getRawConnection() throws SQLException {
         synchronized (this) {
             if (this.con == null) {
                 try {
@@ -121,7 +122,7 @@ class MySqlConnectionImpl implements DatabaseApi.MySqlConnection {
                 // 连接失效了
             }
 
-            return this.getRowConnection();
+            return this.getRawConnection();
         }
     }
 
@@ -143,25 +144,14 @@ class MySqlConnectionImpl implements DatabaseApi.MySqlConnection {
                 resultSet.close();
                 this.setLastUseTime();
             } catch (SQLException e) {
-                this.checkClosedException(e);
+                this.handleException(e);
                 throw e;
             }
         }
     }
 
     @Override
-    public void checkClosedException(@NotNull SQLException e) {
-//        com.mysql.cj.exceptions.ConnectionIsClosedException
-        synchronized (this) {
-            try {
-                this.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
-
-    void close() throws SQLException {
+    public void close() throws SQLException {
 
         synchronized (this) {
             SQLException exception = null;
@@ -186,6 +176,11 @@ class MySqlConnectionImpl implements DatabaseApi.MySqlConnection {
 
             if (exception != null) throw exception;
         }
+    }
+
+    @Override
+    public void handleException(@NotNull SQLException e) throws SQLException {
+        this.close();
     }
 
     long getMaxIdleTime() {
