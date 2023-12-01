@@ -99,7 +99,7 @@
         <dependency>
             <groupId>com.github.PaperCardDev</groupId>
             <artifactId>database-api</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
         </dependency>
 
         <dependency>
