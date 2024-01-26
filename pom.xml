@@ -99,7 +99,7 @@
         <dependency>
             <groupId>com.github.PaperCardDev</groupId>
             <artifactId>database-api</artifactId>
-            <version>1.1</version>
+            <version>1.2</version>
         </dependency>
 
         <dependency>
@@ -112,7 +112,7 @@
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
-            <version>8.0.33</version>
+            <version>8.2.0</version>
             <scope>provided</scope>
         </dependency>
 
