@@ -116,6 +116,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.Anon8281</groupId>
+            <artifactId>UniversalScheduler</artifactId>
+            <version>0.1.6</version>
+        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>

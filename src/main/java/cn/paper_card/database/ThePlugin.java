@@ -1,6 +1,8 @@
 package cn.paper_card.database;
 
 import cn.paper_card.database.api.DatabaseApi;
+import com.github.Anon8281.universalScheduler.UniversalScheduler;
+import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -20,12 +22,16 @@ public final class ThePlugin extends JavaPlugin {
 
     private final @NotNull DatabaseApiImpl databaseApi;
 
+    private final @NotNull TaskScheduler scheduler;
+
     public ThePlugin() {
         this.prefix = Component.text()
                 .append(Component.text("[").color(NamedTextColor.LIGHT_PURPLE))
                 .append(Component.text(this.getName()).color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD))
                 .append(Component.text("]").color(NamedTextColor.LIGHT_PURPLE))
                 .build();
+
+        this.scheduler = UniversalScheduler.getScheduler(this);
 
         this.databaseApi = new DatabaseApiImpl(this.getDataFolder(),
                 new MySqlConfig("important", this),
@@ -51,11 +57,13 @@ public final class ThePlugin extends JavaPlugin {
         // 注册命令
         new MainCommand(this);
 
-        // 测试SQLite
-        this.testSQLite();
+        this.scheduler.runTaskAsynchronously(() -> {
+            // 测试SQLite
+            this.testSQLite();
 
-        // 测试MySQL
-        this.testMySQL();
+            // 测试MySQL
+            this.testMySQL();
+        });
 
         // 保持配置
         this.saveConfig();
@@ -64,6 +72,7 @@ public final class ThePlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         // 关闭MYSQL数据库连接
+        this.scheduler.cancelTasks(this);
 
         try {
             this.databaseApi.getRemoteMySQL().getConnectionImportant().close();
